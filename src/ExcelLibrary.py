@@ -220,8 +220,8 @@ class ExcelLibrary(object):
         """Returns content of a row from the current sheet of the document.\n
         *Args:*\n
             _row_num_: row number, starts with 1.\n
-            _col_offset_: indent.\n
-            _max_num_: maximum number of rows to read.\n
+            _col_offset_: column indent.\n
+            _max_num_: maximum number of columns to read.\n
             _sheet_name_: sheet name, where placed row, that need to be read.\n
         *Returns:*\n
             List, that stores the contents of a row.\n
@@ -237,9 +237,10 @@ class ExcelLibrary(object):
         col_offset = int(col_offset)
         max_num = int(max_num)
         sheet = self.get_sheet(sheet_name)
-        row_iter = sheet.iter_rows(min_row=row_num, max_row=row_num,
-                                   column_offset=col_offset,
-                                   max_col=max_num)  # type: Iterator[Tuple[Cell]]
+        row_iter = sheet.iter_rows(min_row=row_num,
+                                   max_row=row_num,
+                                   min_col=col_offset,
+                                   max_col=col_offset+max_num)  # type: Iterator[Tuple[Cell]]
         row = next(row_iter)  # type: Tuple[Cell]
         return [cell.value for cell in row]
 
@@ -249,8 +250,8 @@ class ExcelLibrary(object):
         """Returns content of a column from the current sheet of the document.\n
         *Args:*\n
             _col_num_: column number, starts with 1.\n
-            _row_offset_: indent.\n
-            _max_num_: maximum number of columns to read.\n
+            _row_offset_: row indent.\n
+            _max_num_: maximum number of rows to read.\n
             _sheet_name_: sheet name, where placed column,
             that need to be read.\n
         *Returns:*\n
@@ -267,9 +268,10 @@ class ExcelLibrary(object):
         row_offset = int(row_offset)
         max_num = int(max_num)
         sheet = self.get_sheet(sheet_name)
-        row_iter = sheet.iter_rows(min_col=col_num, max_col=col_num,
-                                   row_offset=row_offset,
-                                   max_row=max_num)  # type: Iterator[Tuple[Cell]]
+        row_iter = sheet.iter_cols(min_col=col_num,
+                                   max_col=col_num,
+                                   min_row=row_offset,
+                                   max_row=row_offset+max_num)  # type: Iterator[Tuple[Cell]]
         return [row[0].value for row in row_iter]
 
     def write_excel_cell(self, row_num, col_num, value, sheet_name=None):
