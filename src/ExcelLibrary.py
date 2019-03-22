@@ -42,8 +42,8 @@ class ExcelLibrary(object):
     | *Test Cases* | *Action* | *Argument* | *Argument* | *Argument* |
     | Simple |
     |    | Create Excel Document | doc_id=docname1 |
-    |    | Write Cell | row=1 | column=1 | value=text |
-    |    | Save | filename=file.xlsx |
+    |    | Write Excel Cell | row_num=1 | col_num=1 | value=text |
+    |    | Save Excel Document | filename=file.xlsx |
     |    | Close Current Excel Document |
     """
 
@@ -220,8 +220,8 @@ class ExcelLibrary(object):
         """Returns content of a row from the current sheet of the document.\n
         *Args:*\n
             _row_num_: row number, starts with 1.\n
-            _col_offset_: indent.\n
-            _max_num_: maximum number of rows to read.\n
+            _col_offset_: column indent.\n
+            _max_num_: maximum number of columns to read.\n
             _sheet_name_: sheet name, where placed row, that need to be read.\n
         *Returns:*\n
             List, that stores the contents of a row.\n
@@ -237,9 +237,10 @@ class ExcelLibrary(object):
         col_offset = int(col_offset)
         max_num = int(max_num)
         sheet = self.get_sheet(sheet_name)
-        row_iter = sheet.iter_rows(min_row=row_num, max_row=row_num,
-                                   column_offset=col_offset,
-                                   max_col=max_num)  # type: Iterator[Tuple[Cell]]
+        row_iter = sheet.iter_rows(min_row=row_num,
+                                   max_row=row_num,
+                                   min_col=col_offset,
+                                   max_col=col_offset+max_num)  # type: Iterator[Tuple[Cell]]
         row = next(row_iter)  # type: Tuple[Cell]
         return [cell.value for cell in row]
 
@@ -249,8 +250,8 @@ class ExcelLibrary(object):
         """Returns content of a column from the current sheet of the document.\n
         *Args:*\n
             _col_num_: column number, starts with 1.\n
-            _row_offset_: indent.\n
-            _max_num_: maximum number of columns to read.\n
+            _row_offset_: row indent.\n
+            _max_num_: maximum number of rows to read.\n
             _sheet_name_: sheet name, where placed column,
             that need to be read.\n
         *Returns:*\n
@@ -267,9 +268,10 @@ class ExcelLibrary(object):
         row_offset = int(row_offset)
         max_num = int(max_num)
         sheet = self.get_sheet(sheet_name)
-        row_iter = sheet.iter_rows(min_col=col_num, max_col=col_num,
-                                   row_offset=row_offset,
-                                   max_row=max_num)  # type: Iterator[Tuple[Cell]]
+        row_iter = sheet.iter_cols(min_col=col_num,
+                                   max_col=col_num,
+                                   min_row=row_offset,
+                                   max_row=row_offset+max_num)  # type: Iterator[Tuple[Cell]]
         return [row[0].value for row in row_iter]
 
     def write_excel_cell(self, row_num, col_num, value, sheet_name=None):
@@ -280,6 +282,10 @@ class ExcelLibrary(object):
             _col_num_: column number, starts with 1.\n
             _value_: value for writing to a cell.\n
             _sheet_name_: sheet name for write.\n
+        *Example:*\n
+        | ${doc1}= | Create Excel Document | doc_id=docname1 |
+        | Write Excel Cell | row_num=1 | col_num=3 | value=a3 | sheet_name=${DEFAULT_SHEET_NAME} |
+        | Close All Excel Documents |
         """
         row_num = int(row_num)
         col_num = int(col_num)
@@ -294,6 +300,11 @@ class ExcelLibrary(object):
             _row_data_: list of values for writing.\n
             _col_offset_: number of indent columns from start.\n
             _sheet_name_: sheet name for write.\n
+        *Example:*\n
+        | ${doc1}= | Create Excel Document | doc_id=docname1 |
+        | ${row_data}= | Create List | a1 | a2 | a3 |
+        | Write Excel Row | row_num=1 | row_data=${row_data} | sheet_name=${DEFAULT_SHEET_NAME} |
+        | Close All Excel Documents |
         """
         row_num = int(row_num)
         col_offset = int(col_offset)
@@ -325,6 +336,11 @@ class ExcelLibrary(object):
             _col_data_: list of values for writing.\n
             _row_offset_: number of indent rows from start.\n
             _sheet_name_: sheet name for write.\n
+        *Example:*\n
+        | ${doc1}= | Create Excel Document | doc_id=docname1 |
+        | ${col_data}= | Create List | a1 | a2 | a3 |
+        | Write Excel Column | col_num=1 | col_data=${col_data} | sheet_name=${DEFAULT_SHEET_NAME} |
+        | Close All Excel Documents |
         """
         col_num = int(col_num)
         row_offset = int(row_offset)
