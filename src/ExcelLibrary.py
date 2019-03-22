@@ -42,8 +42,8 @@ class ExcelLibrary(object):
     | *Test Cases* | *Action* | *Argument* | *Argument* | *Argument* |
     | Simple |
     |    | Create Excel Document | doc_id=docname1 |
-    |    | Write Cell | row=1 | column=1 | value=text |
-    |    | Save | filename=file.xlsx |
+    |    | Write Excel Cell | row_num=1 | col_num=1 | value=text |
+    |    | Save Excel Document | filename=file.xlsx |
     |    | Close Current Excel Document |
     """
 
@@ -282,6 +282,10 @@ class ExcelLibrary(object):
             _col_num_: column number, starts with 1.\n
             _value_: value for writing to a cell.\n
             _sheet_name_: sheet name for write.\n
+        *Example:*\n
+        | ${doc1}= | Create Excel Document | doc_id=docname1 |
+        | Write Excel Cell | row_num=1 | col_num=3 | value=a3 | sheet_name=${DEFAULT_SHEET_NAME} |
+        | Close All Excel Documents |
         """
         row_num = int(row_num)
         col_num = int(col_num)
@@ -296,6 +300,11 @@ class ExcelLibrary(object):
             _row_data_: list of values for writing.\n
             _col_offset_: number of indent columns from start.\n
             _sheet_name_: sheet name for write.\n
+        *Example:*\n
+        | ${doc1}= | Create Excel Document | doc_id=docname1 |
+        | ${row_data}= | Create List | a1 | a2 | a3 |
+        | Write Excel Row | row_num=1 | row_data=${row_data} | sheet_name=${DEFAULT_SHEET_NAME} |
+        | Close All Excel Documents |
         """
         row_num = int(row_num)
         col_offset = int(col_offset)
@@ -327,6 +336,11 @@ class ExcelLibrary(object):
             _col_data_: list of values for writing.\n
             _row_offset_: number of indent rows from start.\n
             _sheet_name_: sheet name for write.\n
+        *Example:*\n
+        | ${doc1}= | Create Excel Document | doc_id=docname1 |
+        | ${col_data}= | Create List | a1 | a2 | a3 |
+        | Write Excel Column | col_num=1 | col_data=${col_data} | sheet_name=${DEFAULT_SHEET_NAME} |
+        | Close All Excel Documents |
         """
         col_num = int(col_num)
         row_offset = int(row_offset)
