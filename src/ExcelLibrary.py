@@ -68,11 +68,12 @@ class ExcelLibrary(object):
         self._current_id = doc_id
         return self._current_id
 
-    def open_excel_document(self, filename: str, doc_id: str) -> str:
+    def open_excel_document(self, filename: str, doc_id: str, data_only: bool = False) -> str:
         """Opens xlsx document file.\n
         *Args:*\n
             _filename_: document name.\n
             _doc_id_: the identifier for the document that will be opened.\n
+            _data_only_: should reading cell values return formulae or its value\n
         *Returns:*\n
             Document identifier from the cache.\n
         *Example:*\n
@@ -84,16 +85,17 @@ class ExcelLibrary(object):
         if doc_id in self._cache:
             message = u"Document with such id {0} is opened."
             raise SuchIdIsExistException(message.format(doc_id))
-        workbook = openpyxl.load_workbook(filename=filename)
+        workbook = openpyxl.load_workbook(filename=filename, data_only=data_only)
         self._cache[doc_id] = workbook
         self._current_id = doc_id
         return self._current_id
 
-    def open_excel_document_from_stream(self, stream: bytes, doc_id: str) -> str:
+    def open_excel_document_from_stream(self, stream: bytes, doc_id: str, data_only: bool = False) -> str:
         """Opens xlsx document from stream.\n
         *Args:*\n
             _stream_: file-like byte stream object {e.g. from any http request).\n
             _doc_id_: the identifier for the document that will be opened.\n
+            _data_only_: should reading cell values return formulae or its value\n
         *Returns:*\n
             Document identifier from the cache.\n
         *Example:*\n
@@ -104,7 +106,7 @@ class ExcelLibrary(object):
         if doc_id in self._cache:
             message = u"Document with such id {0} is opened."
             raise SuchIdIsExistException(message.format(doc_id))
-        workbook = openpyxl.load_workbook(filename=BytesIO(stream))
+        workbook = openpyxl.load_workbook(filename=BytesIO(stream), data_only=data_only)
         self._cache[doc_id] = workbook
         self._current_id = doc_id
         return self._current_id
