@@ -68,15 +68,16 @@ class ExcelLibrary(object):
         self._current_id = doc_id
         return self._current_id
 
-    def open_excel_document(self, filename: str, doc_id: str) -> str:
+    def open_excel_document(self, filename: str, doc_id: str, keep_vba: bool) -> str:
         """Opens xlsx document file.\n
         *Args:*\n
             _filename_: document name.\n
             _doc_id_: the identifier for the document that will be opened.\n
+            _keep_vba_: save vba macros for xlsm document. \n
         *Returns:*\n
             Document identifier from the cache.\n
         *Example:*\n
-        | Open Excel Document | filename=file.xlsx | doc_id=docid |
+        | Open Excel Document | filename=file.xlsx | doc_id=docid | keep_vba=false |
         | Close All Excel Documents |
         """
         filename = str(filename)
@@ -84,16 +85,17 @@ class ExcelLibrary(object):
         if doc_id in self._cache:
             message = u"Document with such id {0} is opened."
             raise SuchIdIsExistException(message.format(doc_id))
-        workbook = openpyxl.load_workbook(filename=filename)
+        workbook = openpyxl.load_workbook(filename=filename, keep_vba=keep_vba)
         self._cache[doc_id] = workbook
         self._current_id = doc_id
         return self._current_id
 
-    def open_excel_document_from_stream(self, stream: bytes, doc_id: str) -> str:
+    def open_excel_document_from_stream(self, stream: bytes, doc_id: str, keep_vba: bool) -> str:
         """Opens xlsx document from stream.\n
         *Args:*\n
             _stream_: file-like byte stream object {e.g. from any http request).\n
             _doc_id_: the identifier for the document that will be opened.\n
+            _keep_vba_: save vba macros for xlsm document. \n
         *Returns:*\n
             Document identifier from the cache.\n
         *Example:*\n
@@ -104,7 +106,7 @@ class ExcelLibrary(object):
         if doc_id in self._cache:
             message = u"Document with such id {0} is opened."
             raise SuchIdIsExistException(message.format(doc_id))
-        workbook = openpyxl.load_workbook(filename=BytesIO(stream))
+        workbook = openpyxl.load_workbook(filename=BytesIO(stream), keep_vba=keep_vba)
         self._cache[doc_id] = workbook
         self._current_id = doc_id
         return self._current_id
