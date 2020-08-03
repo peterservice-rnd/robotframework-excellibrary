@@ -17,13 +17,13 @@ with open(path.join(here, 'requirements.txt')) as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='robotframework-excellib',
-    version='2.0.1',
+    name='robotframework-excellib-xlsm',
+    version='2.0.2',
     description='Robot Framework library for working with Excel documents',
     long_description=long_description,
-    url='https://github.com/peterservice-rnd/robotframework-excellib',
-    author='Nexign',
-    author_email='MF_AIST_all@nexign-systems.com',
+    url='https://github.com/TheOddPanda/robotframework-excellib',
+    author='TheOddPanda',
+    author_email='adrian.buechi@ergon.ch',
     license='Apache License 2.0',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
