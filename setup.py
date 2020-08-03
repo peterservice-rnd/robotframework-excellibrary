@@ -18,7 +18,7 @@ with open(path.join(here, 'requirements.txt')) as f:
 
 setup(
     name='robotframework-excellib-xlsm',
-    version='2.0.2',
+    version='2.0.3',
     description='Robot Framework library for working with Excel documents',
     long_description=long_description,
     url='https://github.com/TheOddPanda/robotframework-excellib',
