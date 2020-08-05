@@ -13,12 +13,12 @@ Installation
 
 ::
 
-    pip install robotframework-excellib
+    pip install robotframework-excellib-xlsm
 
 Documentation
 -------------
 
-See keyword documentation for robotframework-excellib library: docs_.
+See keyword documentation for robotframework-excellib-xlsm library: docs_.
 
 Example
 -------
@@ -37,11 +37,15 @@ Example
 License
 -------
 
+Forked Version of Excel Library by: https://github.com/peterservice-rnd/robotframework-excellib
+
 Apache License 2.0
 
 .. _Robot Framework: http://www.robotframework.org
 
 .. _openpyxl: https://pypi.python.org/pypi/openpyxl
+
+.. _origin library:	 https://github.com/peterservice-rnd/robotframework-excellib
 
 .. |Build Status| image:: https://travis-ci.org/peterservice-rnd/robotframework-excellib.svg?branch=master
    :target: https://travis-ci.org/peterservice-rnd/robotframework-excellib
